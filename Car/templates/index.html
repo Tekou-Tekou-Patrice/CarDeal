@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarDeal - Accueil</title>
+</head>
+<body>
+    <div>
+        {% if user.is_authenticated %}
+            <h1 class="display-5 fw-bold">Bienvenue, {{ user.username }} !</h1>
+        {% else %}
+            <h1 class="display-5 fw-bold">Bienvenue à vous, étranger !</h1>
+            <a href="{% url 'inscription' %}" class="btn btn-sm btn-outline-primary">S'inscrire</a>
+        {% endif %}
+    </div>
+
+    {% for car in cars %}
+        <div style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+            {% if car.image %}
+                <img src="{{ car.image.url }}" alt="{{ car.nom }}" style="width: 300px;">
+            {% else %}
+                <img src="https://via.placeholder.com/300x200" alt="Image par défaut">
+            {% endif %}
+
+            <h4 class="card-title">{{ car.nom }}</h4>
+
+            <p class="card-text text-secondary">{{ car.description|truncatewords:10 }}</p>
+
+            <hr>
+            <small class="text-muted">🕒 Publié il y a {{ car.pub_date|timesince }}</small>
+        </div>
+    {% empty %}
+        <p>Aucune voiture disponible pour le moment.</p>
+    {% endfor %}
+
+</body>
+</html>
